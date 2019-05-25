@@ -1,0 +1,29 @@
+extends head
+block append body
+    body(id=currentId)
+        #cover
+            if headerHas
+                include header.pug
+            if mainHas
+                if html5
+                    main
+                        .container
+                            if sidebarHas
+                                include sidebar.pug
+                            block main
+                else
+                    #main
+                        .container
+                            if sidebarHas
+                                include sidebar.pug
+                            block main
+            else
+                .container
+                    if sidebarHas
+                        include sidebar.pug
+                    block main
+            if fixedBoxHas
+                include fixedBox.pug
+            if footerHas
+                include footer.pug
+        block js

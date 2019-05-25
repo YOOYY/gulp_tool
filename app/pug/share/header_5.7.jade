@@ -1,0 +1,16 @@
+// [if lt IE 8]><p class="chromeframe"> 您使用的IE浏览器版本过低。#[a(href="//windows.microsoft.com/" target="_blank") 升级您的IE浏览器]，或使用#[a(href="//www.google.cn/intl/zh-CN/chrome/" target="_blank") Google Chrome]、#[a(href="//www.firefox.com.cn/download/" target="_blank") Firefox]等高级浏览器，将会得到更好的体验！</p><[endif]
+#header
+    .container
+        ul
+            each val, index in header.nav
+                li
+                    a(
+                        href=viewUrl+val.href
+                        class={active:currentId === val.pageId}
+                    ) !{val.text}
+                        i !{val.i}
+        a.logo(href=viewUrl+header.logo.href)
+            img(
+                src=imgUrl+header.logo.img
+                alt=header.logo.alt
+            )

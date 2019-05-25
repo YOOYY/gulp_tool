@@ -1,0 +1,32 @@
+doctype html
+html
+    //- 加载页面配置
+    block config
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='keywords',content=head.keywords)
+        meta(name='description',content=head.description)
+        if head.noCache
+            meta(http-equiv='pragram', content='no-cache')
+        if head.maxAge
+            meta(http-equiv='Cache-Control', content='max-age=#{head.maxAge}')
+        if head.robots
+            meta(name='Robots', content=head.robots)
+        if head.icon
+            link(rel="shortcut icon",href=imgUrl+head.icon)
+        title !{head.title}
+        script(src=jsUrl+'remBody.js')
+        if baseCss
+            link(rel='stylesheet',href=cssUrl+baseCss+'.css')
+        if pageCss
+            link(rel='stylesheet',href=cssUrl+pageCss+'.css')
+        link(rel='stylesheet',href='index.css')
+
+        //- meta(http-equiv='expires', content='Wednesday,21-Oct-98 16:14:21 GMT')
+        //- meta(http-equiv='Set-Cookie', content='cookievalue=xxx; expires=Wednesday,21-Oct-98 16:14:21 GMT; path=/')
+        block head
+    block body
+    body
+        a(href=`https://${site}`) Link

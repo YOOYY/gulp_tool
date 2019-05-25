@@ -1,0 +1,14 @@
+{
+    "root": true,
+    "env": {
+        "browser": true
+    },
+    "extends": "eslint:recommended",
+    "plugins": [
+        "html"
+    ],
+    "rules": {
+        "no-debugger": 0,
+        "no-console": 0
+    }
+}
