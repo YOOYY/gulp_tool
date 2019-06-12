@@ -10,43 +10,43 @@
 // At the bottom of this section, we provide information about the spritesheet itself
 // $spritesheet: width height image $spritesheet-sprites;
 $name1-name: 'name1';
-$name1-x: 0;
-$name1-y: 0;
-$name1-offset-x: 0;
-$name1-offset-y: 0;
-$name1-width: 3.98rem;
-$name1-height: 2.83rem;
-$name1-total-width: 8.15rem;
-$name1-total-height: 4.71rem;
+$name1-x: 0px;
+$name1-y: 0px;
+$name1-offset-x: 0px;
+$name1-offset-y: 0px;
+$name1-width: 398px;
+$name1-height: 283px;
+$name1-total-width: 815px;
+$name1-total-height: 471px;
 $name1-image: 'sdf/sgf.png';
-$name1: (0, 0, 0, 0, 3.98rem, 2.83rem, 8.15rem, 4.71rem, 'sdf/sgf.png', 'name1', );
+$name1: (0px, 0px, 0px, 0px, 398px, 283px, 815px, 471px, 'sdf/sgf.png', 'name1', );
 $name2-name: 'name2';
-$name2-x: 0;
-$name2-y: 2.88rem;
-$name2-offset-x: 0;
-$name2-offset-y: -2.88rem;
-$name2-width: 4.12rem;
-$name2-height: 1.83rem;
-$name2-total-width: 8.15rem;
-$name2-total-height: 4.71rem;
+$name2-x: 0px;
+$name2-y: 288px;
+$name2-offset-x: 0px;
+$name2-offset-y: -288px;
+$name2-width: 412px;
+$name2-height: 183px;
+$name2-total-width: 815px;
+$name2-total-height: 471px;
 $name2-image: 'sdf/sgf.png';
-$name2: (0, 2.88rem, 0, -2.88rem, 4.12rem, 1.83rem, 8.15rem, 4.71rem, 'sdf/sgf.png', 'name2', );
+$name2: (0px, 288px, 0px, -288px, 412px, 183px, 815px, 471px, 'sdf/sgf.png', 'name2', );
 $name4-name: 'name4';
-$name4-x: 4.03rem;
-$name4-y: 0;
-$name4-offset-x: -4.03rem;
-$name4-offset-y: 0;
-$name4-width: 4.12rem;
-$name4-height: 2.71rem;
-$name4-total-width: 8.15rem;
-$name4-total-height: 4.71rem;
+$name4-x: 403px;
+$name4-y: 0px;
+$name4-offset-x: -403px;
+$name4-offset-y: 0px;
+$name4-width: 412px;
+$name4-height: 271px;
+$name4-total-width: 815px;
+$name4-total-height: 471px;
 $name4-image: 'sdf/sgf.png';
-$name4: (4.03rem, 0, -4.03rem, 0, 4.12rem, 2.71rem, 8.15rem, 4.71rem, 'sdf/sgf.png', 'name4', );
-$spritesheet-width: 8.15rem;
-$spritesheet-height: 4.71rem;
+$name4: (403px, 0px, -403px, 0px, 412px, 271px, 815px, 471px, 'sdf/sgf.png', 'name4', );
+$spritesheet-width: 815px;
+$spritesheet-height: 471px;
 $spritesheet-image: 'sdf/sgf.png';
 $spritesheet-sprites: ($name1, $name2, $name4, );
-$spritesheet: (8.15rem, 4.71rem, 'sdf/sgf.png', $spritesheet-sprites, );
+$spritesheet: (815px, 471px, 'sdf/sgf.png', $spritesheet-sprites, );
 
 // The provided mixins are intended to be used with the array-like variables
 //
@@ -88,13 +88,7 @@ $spritesheet: (8.15rem, 4.71rem, 'sdf/sgf.png', $spritesheet-sprites, );
 
 @mixin sprite-image($sprite) {
   $sprite-image: nth($sprite, 9);
-  background-image: url($imgUrl+#{$sprite-image})
-}
-
-@mixin sprite-size($sprite){
-  $sprite-total-width: nth($sprite,7);
-  $sprite-total-height: nth($sprite,8);
-  background-size:$sprite-total-width $sprite-total-height;
+  background-image: url(#{$sprite-image});
 }
 
 @mixin sprite($sprite) {
@@ -102,7 +96,6 @@ $spritesheet: (8.15rem, 4.71rem, 'sdf/sgf.png', $spritesheet-sprites, );
   @include sprite-position($sprite);
   @include sprite-width($sprite);
   @include sprite-height($sprite);
-  @include sprite-size($sprite)
 }
 
 // The `sprites` mixin generates identical output to the CSS template

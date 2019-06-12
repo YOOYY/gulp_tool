@@ -17,6 +17,14 @@ var gulp = require("gulp"),
     autoprefixer = require('gulp-autoprefixer'),
     styleLint = require('gulp-stylelint'),
     uncss = require('gulp-uncss'),
+    postcss = require('gulp-postcss'),
+    colorRgbaFallback = require("postcss-color-rgba-fallback"),
+    opacity = require('postcss-opacity'),
+    pe = require('postcss-pseudoelements'),
+    px2rem = require('postcss-px2rem'),
+    pixrem  = require('pixrem'),
+    mergeRules = require('postcss-merge-rules'),
+    base64 = require('gulp-base64'),
 
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
@@ -49,7 +57,7 @@ var gulp = require("gulp"),
     outcssPath = outPath + "/css",
     outjsPath = outPath + "/js",
     outimgPath = outPath + "/imgs",
-    outrevPath = outPath + "/rev", 
+    outrevPath = outPath + "/rev",
     gitinit = false;
 
 //清理缓存
@@ -126,9 +134,13 @@ gulp.task('img', gulp.series('copyDir', 'sprites', 'cleanSprites', 'tinypng'));
 //html
 gulp.task('pug', () =>
     gulp.src([htmlPath + '/**/*.pug', '!' + htmlPath + '/share/**'])
-        .pipe(data(function (file) {
-            return require('./' + htmlPath + '/share/config.json');
-        }))
+        .pipe(
+            gulpif(
+                fs.existsSync('./' + htmlPath + '/share/config.json'),data(function (file) {
+                    return require('./' + htmlPath + '/share/config.json');
+                })
+            )
+        )
         .pipe(pug({
             pretty: true
         }))
@@ -179,17 +191,45 @@ gulp.task('html', gulp.series('pug', 'revCollector', 'uncss','cleanRev'))
 
 //css
 gulp.task('css', function () {
+    var processors = [
+        mergeRules,
+        colorRgbaFallback,
+        opacity,
+        pe,
+        px2rem({
+            baseDpr: 2,             // base device pixel ratio (default: 2)
+            threeVersion: false,    // whether to generate @1x, @2x and @3x version (default: false)
+            remVersion: true,       // whether to generate rem version (default: true)
+            remUnit: 75,            // rem unit value (default: 75)
+            remPrecision: 6         // rem precision (default: 6)
+        }),
+        pixrem({
+            rootValue: 75, 
+            replace: false, 
+            atrules: true, 
+            html: true, 
+            browsers: 'ie <= 8', 
+            unitPrecision: 3
+        })
+    ];
     return gulp.src(scssPath + '/*.scss')
         .pipe(sass().on('error', sass.logError).on('error',function(){
             throw('scss转css错误');
         }))
-        .pipe(styleLint({
-            failAfterError: true,
-            // 输出结果
-            reporters: [
-                { formatter: 'verbose', console: true },
-            ]
+        // .pipe(styleLint({
+        //     failAfterError: true,
+        //     // 输出结果
+        //     reporters: [
+        //         { formatter: 'verbose', console: true },
+        //     ]
+        // }))
+        .pipe(base64({
+            extensions: ['svg', 'png', /\.jpg#datauri$/i],
+            exclude:    [],
+            // maxImageSize: 8*1024, // bytes
+            debug: true
         }))
+        .pipe(postcss(processors))
         .pipe(
             gulpif(
                 condition, autoprefixer({

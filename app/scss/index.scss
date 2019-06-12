@@ -1,4 +1,10 @@
-.ddd{
-    background:white;
-    color: saddlebrown;
+@media screen and (min-width:1200px){
+    #page{ width: 1100px; }
+}
+@media screen and (min-width:1200px){
+    #content,.div1{width: 730px;}
+#secondary{width:310px}
+}
+#body{
+    background: url("http://p8.qhimg.com/t01f817aa774f5c1b0f.png");
 }
