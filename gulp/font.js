@@ -51,3 +51,5 @@ gulp.task('fontrev', function(done){
         done();
     }
 })
+
+gulp.task('fonts', gulp.series('font', 'fontrev'))

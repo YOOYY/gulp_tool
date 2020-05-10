@@ -22,10 +22,10 @@ const { src:gSrc, dest:gDest, series:gSeries, task:gTask } = require('gulp'),
         getDirs,
         condition,
         gulpConfig
-    } = require('gulp-tool/gulp/config'),
+    } = require('gulp-tool/gulp/config');
 
-    prefix = gulpConfig.prefix || '$_'; //雪碧图文件夹标志
 let spritesDirs = [],
+    prefix = gulpConfig.prefix,//雪碧图文件夹标志
     needSprite = false;
 
 function copyImgDir(){
@@ -106,5 +106,7 @@ function imgrev(done){
         done();
     }
 }
+
+gTask('imgrev',imgrev);
 
 gTask('img',gSeries(copyImgDir, sprites, cleanSprites, tinyImg, imgrev))

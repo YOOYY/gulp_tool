@@ -91,6 +91,8 @@
     html压缩工具
 6.[sass](https://www.sass.hk/)
     sass和less任选其一
+7.[stylelint](https://stylelint.io/user-guide/rules)
+    css检查工具
 7.[eslint](https://eslint.cn/)
     es检查工具
 7.[git](https://www.liaoxuefeng.com/wiki/896043488029600)
@@ -111,3 +113,23 @@
     工具中添加了对html,css的校验,但是并没有对scss和pug进行校验,scss和pug的校验主要依赖编辑器,但可能近期校验的报错会很多,因为没有实际测试过好坏,所以很多校验规则需要去除.
 
     本来想添加类似于wepack的tree shaking功能,但是没有在gulp上找到类似插件
+
+// gulp init
+// gulp gitAdd gulp gitCommit gulp gitPull
+// git pull origin master
+// refusing to merge unrelated histories
+// 修改文件
+// git pull origin master --allow-unrelated-histories
+// Please commit your changes or stash them before you merge.
+// 合并冲突
+// gulp gitAdd
+// git commit -a
+
+// Please move or remove them before you merge.
+
+gulp-base64修改
+encode.js 
+21 var rImages = /([\s\S]*?)((?:(?:src\s*=\s*|url)[\'|\"|\(])([^>\s)]+)[\'|\"|\)])(?!\s*[;,>]?\s*\/\*\s*base64:skip\s*\*\/)|([\s\S]+)/img;
+136 var url = group[2].replace(group[3],resp);
+
+文件需要完全匹配才能更换缓存

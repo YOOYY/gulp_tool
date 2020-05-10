@@ -1,6 +1,8 @@
 {
     "gulp":{
-        "changeExtname":{"ext":".php","dirGlobStr":"/index.html"}
+        "ext":"&",
+        "prefix":"$_",
+        "gitUrl":"http://10.1.3.188/1156864263/test.git"
     },
     "pug":{
         "base":{
@@ -15,13 +17,13 @@
     },
     "scss":{
         "base":{
-            "viewUrl":"xxxxxx"
+            "$imgUrl":"base"
         },
         "debug":{
-            "imgUrl":"xxxx"
+            "$imgUrl":"debug"
         },
         "build":{
-            "imgUrl":"xxxxx"
+            "$imgUrl":"build"
         }
     },
     "js":{

@@ -16,7 +16,7 @@ var gulp = require("gulp"),
     reload = require('browser-sync').reload,
     config = require('./config'),
 
-    ext = config.gulpConfig.ext || '&';
+    ext = config.gulpConfig.ext;
 gulp.task('pug', () =>{
     return gulp.src(config.pugPath + '/**/*.pug')
         .pipe(pugLinter({
@@ -36,11 +36,13 @@ gulp.task('pug', () =>{
             gulpif(
                 function(file){
                     return file.basename.includes(ext);
-                },rename(function(path){
+                },
+                rename(function(path){
                     let [basename,extname] = path.basename.split(ext),
                         obj = {
                             'basename':basename,
-                            'extname':'.' + extname
+                            'extname':'.' + extname,
+                            'dirname':path.dirname
                         };
                     if(config.outHtmlDir !== false){
                         obj.dirname = config.outHtmlDir

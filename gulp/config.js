@@ -1,5 +1,5 @@
 let path  = require('path'),
-    pathJoin = require('path').join,
+    pathJoin = path.join,
     rootPath = process.cwd(),
     fs = require('fs'),
 
@@ -14,17 +14,17 @@ let path  = require('path'),
     templatePath = pathJoin(toolPath,'template'),
     mock = require(pathJoin(appPath,'gulp/mock.js')),
 
+    //这里的配置应该改
     appConfig = JSON.parse(fs.readFileSync(pathJoin(appPath,'config.json'))),
     gulpConfig = appConfig.gulp,
-    changeExtname = gulpConfig.changeExtname || false,  //修改html文件后缀(dirGlobStr相对于生成目录) options：{ext:<String>,dirGlobStr:<String>} eg:{"ext":".php","dirGlobStr":"/index.html"}
-    outHtmlDir = gulpConfig.outHtmlDir || '', //修改html文件生成中间目录
+    outHtmlDir = gulpConfig.outHtmlDir || false, //修改html文件生成中间目录
     jsTranlate = gulpConfig.jsTranlate || 'concat', //js转换模式 concat || es6 || ts
     jsConcatDir = gulpConfig.jsConcatDir || ['base'], //数组成员混入config配置
     
     git = ['./app','README.md','*(debug|build)'], //git上传目录
     gitUrl = gulpConfig.gitUrl || '', //项目git地址
-    // condition = (process.argv[2] === 'build' ? true : false), //环境判断
-    condition = false,
+    condition = (process.argv[2] === 'build' ? true : false), //环境判断
+    // condition = false,
     browsers = gulpConfig.browsers || [ //css浏览器兼容
         'last 2 versions',
         '> 1% in CN',
@@ -98,7 +98,6 @@ exports = module.exports = {
     getDirs,
     server,
     outHtmlDir,
-    changeExtname,
     jsConcatDir,
     jsTranlate,
     appConfig,
