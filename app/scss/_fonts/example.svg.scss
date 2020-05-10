@@ -1,0 +1,21 @@
+@font-face {
+    font-family: "example.svg";
+    src: url($fontUrl+'example.svg.eot');
+    src: url($fontUrl+'example.svg.eot?#iefix') format('eot'),
+        url($fontUrl+'example.svg.woff2') format('woff2'),
+        url($fontUrl+'example.svg.woff') format('woff'),
+        url($fontUrl+'example.svg.ttf') format('truetype'),
+        url($fontUrl+'example.svg.svg#example.svg') format('svg');
+}
+
+@mixin example.svg-styles {
+    font-family: "example.svg";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    // speak: none; // only necessary if not using the private unicode range (firstGlyph option)
+    text-decoration: none;
+    text-transform: none;
+}

@@ -4,6 +4,7 @@
     "disallowClassLiteralsBeforeIdLiterals":true,
     "disallowDuplicateAttributes":true,
     "disallowIdAttributeWithStaticValue":true,
+    "disallowLegacyMixinCall":true,
     "disallowMultipleLineBreaks":true,
     "disallowSpacesInsideAttributeBrackets":true,
     "disallowSpecificTags":[
@@ -11,15 +12,20 @@
         "command","datalist","details","dialog","dir","font","frame","frameset",
         "menu","meter","noframes","noscript","output","s","strike","summary","tt"
     ],
+    "disallowTrailingSpaces":true,
     "requireClassLiteralsBeforeAttributes":true,
     "requireIdLiteralsBeforeAttributes":true,
     "requireLowerCaseAttributes":true,
     "requireLowerCaseTags":true,
-    "requireSpecificAttributes":[ { "img": [ "alt" ] } ],
+    "requireSpaceAfterCodeOperator":["=","!="],
+    "requireSpecificAttributes":[ { "img": [ "alt" ] }],
+    "requireStrictEqualityOperators":true,
     "validateAttributeQuoteMarks":"'",
-    "validateAttributeSeparator":{"separator":" ","multiLineSeparator": "\n "},
+    "validateAttributeSeparator":" ",
     "validateDivTags":true,
     "validateExtensions":true,
+    "validateIndentation":4,
+    "validateLineBreaks":"CRLF",
     "validateSelfClosingTags":true,
     "validateTemplateString":true
 }

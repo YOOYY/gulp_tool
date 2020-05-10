@@ -1,0 +1,78 @@
+//单图片参数
+
+$s-android-share-name: 'android_share';
+$s-android-share-x: -755px;
+$s-android-share-y: 0px;
+$s-android-share-width: 228px;
+$s-android-share-height: 86px;
+$s-android-share: (-755px, 0px, 228px, 86px,983px,
+1334px,
+'share/test.png', 'share_test_android_share');
+$s-bg-share-name: 'bg_share';
+$s-bg-share-x: 0px;
+$s-bg-share-y: 0px;
+$s-bg-share-width: 750px;
+$s-bg-share-height: 1334px;
+$s-bg-share: (0px, 0px, 750px, 1334px,983px,
+1334px,
+'share/test.png', 'share_test_bg_share');
+$s-ios-share-name: 'ios_share';
+$s-ios-share-x: -755px;
+$s-ios-share-y: -91px;
+$s-ios-share-width: 228px;
+$s-ios-share-height: 86px;
+$s-ios-share: (-755px, -91px, 228px, 86px,983px,
+1334px,
+'share/test.png', 'share_test_ios_share');
+
+$s-spritesheet-width: 983px;
+$s-spritesheet-height: 1334px;
+$s-spritesheet-image: 'share/test.png';
+$s-spritesheet-sprites: ($s-android-share, $s-bg-share, $s-ios-share, );
+$s-spritesheet: (983px,
+1334px,'share/test.png' );
+
+@mixin sprite-width($sprite){
+width: nth($sprite, 3);
+}
+
+@mixin sprite-height($sprite){
+height: nth($sprite, 4);
+}
+
+@mixin sprite-position($sprite){
+$sprite-x: nth($sprite, 1);
+$sprite-y: nth($sprite, 2);
+background-position: $sprite-x $sprite-y;
+}
+
+@mixin sprite-image($sprite){
+$sprite-image: nth($sprite, 7);
+background-image: url($imgUrl+$sprite-image);
+}
+
+@mixin sprite-size($sprite){
+$sprite-total-width: nth($sprite, 5);
+$sprite-total-height: nth($sprite, 6);
+background-size:$sprite-total-width $sprite-total-height;
+}
+
+@mixin sprite($sprite){
+@include sprite-image($sprite);
+@include sprite-size($sprite);
+@include sprite-position($sprite);
+@include sprite-width($sprite);
+@include sprite-height($sprite);
+}
+
+
+//生成css类名,不推荐使用
+//传入的变量应为$spritesheet-sprites
+@mixin spritesheet($sprites){
+@each $sprite in $sprites{
+$sprite-name: nth($sprite, 8);
+}
+.#{$sprite-name}{
+@include sprite($sprite)
+}
+}

@@ -1,10 +1,168 @@
-@media screen and (min-width:1200px){
-    #page{ width: 1100px; }
+.title{
+    position: relative;
+    padding-top:14px;
+    margin-bottom:27px;
+    div{
+        margin: 0 auto;
+    }
+    &:before,&:after{
+        content: "";
+        position: absolute;
+        bottom: 4px;right: 0;
+        width:411px;height:27px;
+    }
+    &:after{
+        left: 0;
+    }
 }
-@media screen and (min-width:1200px){
-    #content,.div1{width: 730px;}
-#secondary{width:310px}
+
+#game{
+    margin-top:75px;
+    background: #f3f7fd;
+    .game_box{
+        a{
+            float: left;
+            margin-left: 13px;
+        }
+    }
 }
-#body{
-    background: url("http://p8.qhimg.com/t01f817aa774f5c1b0f.png");
+
+#news{
+    background: #f3f7fd;
+    .title{
+        padding-top: 44px;
+    }
+
+    .news_box{
+        height: 312px;
+        float: left;
+        ul{
+            background: #e8f1ff;
+            li{
+                float: left;
+                width: 154px;height: 36px;
+                color: #8f8f8f;
+                border-bottom:2px solid #d2e3f7;
+                cursor: pointer;
+                &.active{
+                    height: 34px;
+                    color: #244ec6;
+                    border-bottom:4px solid #8484ff;
+                }
+                p{
+                    height: 24px;
+                    border-left: 2px #bccae4 solid;
+                    margin-top:6px;
+                    line-height: 24px; text-align: center;
+                }
+                &:first-child p{
+                    border-left: none;
+                }
+            }
+        }
+        ol{
+            display: none;
+        }
+    }
+    .news_banner{
+        float: left;
+        width: 562px;height: 312px;
+    }
+}
+
+.news_box,#wiki{
+    ol{
+        width: 390px;height:268px;
+        margin: 9px auto 0;
+        li{
+            color: #585858;
+            height: 32px;line-height:32px;
+            border-bottom: #c2c2c2 dotted 1px;
+            font-size:14px;
+            a{
+                color: #585858;
+            }
+        }
+        .text{
+            width: 290px;
+        }
+    }
+}
+
+#wiki{
+    background: #f3f7fd;
+    .title{ 
+        padding-top: 45px;
+    }
+    ol{
+        width: 952px;
+        margin-top:-7px;
+        .text{
+            width: 830px;
+        }
+    }
+}
+
+#image{
+    background: #f3f7fd;
+    .title{
+        padding-top: 42px;
+        margin-bottom:21px;
+    }
+    .banner_box{
+        height: 387px;
+        background-color: #d8e6ff;
+        position: relative;
+
+        .prev,.next{
+            position: absolute;
+            top: 161px;
+            cursor: pointer;
+        }
+        .prev{
+            left: 7px;
+        }
+        .next{
+            right: 7px;
+        }
+        ul{
+            width:900px;height: 375px;
+            position: relative;
+            margin:6px auto;
+            li{
+                position: absolute;
+                overflow: hidden;
+            }
+            .pos_1 { 
+                top: 44px; left: 0; z-index: 2; filter: alpha(opacity=60); opacity: 0.6; 
+                img{width:534px;}    
+            }
+            .pos_2 { 
+                top: 25px; left: 51px; z-index: 3; filter: alpha(opacity=80); opacity: 0.8;
+                img{width:600px;}
+            }
+            .pos_3 { 
+                top: 6px; left: 117px; z-index: 4; 
+                img{width:667px;}    
+            }
+            .pos_4 { 
+                top: 25px; left: 250px; z-index: 3; filter: alpha(opacity=80); opacity: 0.8;
+                img{width:600px;}    
+            }
+            .pos_5 { 
+                top: 44px; left: 366px; z-index: 2; filter: alpha(opacity=60); opacity: 0.6; 
+                img{width:534px;}    
+            }
+        }
+    }
+    .tel_phone{
+        padding-top: 45px;
+        background-color: #f3f7fd;
+    }
+}
+
+#bgBottom{
+    position: absolute;
+    bottom: 0;left: 0;
+    z-index: -1;
 }

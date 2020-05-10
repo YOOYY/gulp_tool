@@ -1,5 +1,4 @@
 var gulp = require("gulp"),
-    fs = require('fs'),
     gulpif = require('gulp-if'),
     data = require('gulp-data'),
 
@@ -10,47 +9,53 @@ var gulp = require("gulp"),
     fancyLog = require('fancy-log'),
     colors = require('ansi-colors'),
 
-    js2json = require('./js2json'),
-
+    js2json = require('gulp-js2json'),
+    rename = require('gulp-rename'),
     htmlmin = require('gulp-htmlmin'),
     revCollector = require('gulp-rev-collector'),
     reload = require('browser-sync').reload,
-    config = require('./config.js');
+    config = require('./config'),
 
-//html
-
-gulp.task('pugLint', () =>
-    gulp.src(config.pugPath + '/**/*.pug')
+    ext = config.gulpConfig.ext || '&';
+gulp.task('pug', () =>{
+    return gulp.src(config.pugPath + '/**/*.pug')
         .pipe(pugLinter({
             reporter: puglintReporter,
             failAfterError: true
         }))
-);
-
-gulp.task('pug', () =>
-    gulp.src([config.pugPath + '/**/*.pug', '!' + config.pugPath + '/_share/**'])
-        .pipe(
-            gulpif(
-                fs.existsSync(config.pugPath + '/_share/config/' + config.outPath + '.json'),data(function () {
-                    return JSON.parse(fs.readFileSync(config.pugPath + '/_share/config/' + config.outPath + '.json'));
-                })
-            )
-        )
-        .pipe(data(function () {
-            return JSON.parse(fs.readFileSync(config.pugPath + '/_share/config/index.json'));
+        .pipe(data(function(){
+            let {base, debug, build} = config.appConfig.pug;
+            return Object.assign(base,(config.condition?build:debug));
         }))
         .pipe(pug({
             pretty: !config.condition,
             doctype: 'html'
         }))
         .pipe(htmllint({"failOnError":true,"config":".htmllintrc.json"}, htmllintReporter))
-        .pipe(gulp.dest(config.outhtmlPath))
+        .pipe(
+            gulpif(
+                function(file){
+                    return file.basename.includes(ext);
+                },rename(function(path){
+                    let [basename,extname] = path.basename.split(ext),
+                        obj = {
+                            'basename':basename,
+                            'extname':'.' + extname
+                        };
+                    if(config.outHtmlDir !== false){
+                        obj.dirname = config.outHtmlDir
+                    }
+                    return obj;
+                })
+            )
+        )
+        .pipe(gulp.dest(config.outHtmlPath))
         .pipe(reload({ stream: true }))
-);
+});
 
 gulp.task('revCollector', (done) => {
     if (config.condition) {
-        return gulp.src([config.outrevPath + '/**/*.json', config.outhtmlPath + '/**/*.html'])
+        return gulp.src([config.outrevPath + '/**/*.json', config.outHtmlPath + '/**/*.html'])
             .pipe(revCollector())
             .pipe(
                 htmlmin({
@@ -65,21 +70,21 @@ gulp.task('revCollector', (done) => {
                     minifyJS:true
                 })
             )
-            .pipe(gulp.dest(config.outhtmlPath))
+            .pipe(gulp.dest(config.outHtmlPath))
     } else {
         done();
     }
 });
 
 gulp.task('transformData', function () {
-    return gulp.src(config.dataPath + '/*.js')
+    return gulp.src(config.dataPath + '/*.js',{'allowEmpty':true})
         .pipe(js2json())
         .pipe(gulp.dest(config.outdataPath));
 });
 
-gulp.task('html', gulp.series('pugLint', 'pug', 'transformData', 'revCollector'))
+gulp.task('html', gulp.series('pug', 'transformData', 'revCollector'))
 
-const puglintReporter = (errors) => {
+function puglintReporter(errors){
     if (errors.length > 0) {
         errors.map(function (error) {
             fancyLog(colors.cyan('[gulp-puglint] ') + colors.white(error.filename + ' [' + error.line + ',' + error.column + ']: ') + colors.red('(' + error.code + ') ' + error.msg));
@@ -87,7 +92,7 @@ const puglintReporter = (errors) => {
  
         process.exitCode = 1;
     }
-};
+}
 
 function htmllintReporter(filepath, issues) {
     if (issues.length > 0) {

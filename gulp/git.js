@@ -1,7 +1,7 @@
 var gulp = require("gulp"),
     fs = require('fs'),
     git = require('gulp-git'),
-    config = require('./config.js'),
+    config = require('./config'),
     gitinit = false,
     gitfix = ((process.argv[2] == 'gitfix') ? true : false),
     gitLog = (process.argv[3] || (config.condition?'build':'fixed bugs'));
@@ -68,7 +68,9 @@ gulp.task('clone', function(){
 
 gulp.task('git', gulp.series('gitInit','gitAddremote', 'gitAdd', 'gitCommit', 'gitPull', 'gitPush'));
 //如果gitfix时文件发生冲突,解决冲突后需要gulp gitadd,然后git rebase --continue
-gulp.task('gitfix', gulp.series('gitInit','gitAddremote','gitAdd', 'gitCommit', 'gitPull', 'gitPush'));
+// gulp.task('gitfix', gulp.series('gitInit','gitAddremote','gitAdd', 'gitCommit', 'gitPull', 'gitPush'));
 
 // gulp.task('git', gulp.series('init','addremote', 'add', 'commit', 'pull', 'push'));
 // gulp.task('gitClone', gulp.series('init', 'add', 'commit', 'clone', 'push'));
+
+gulp.task('gitfix', gulp.series('gitInit','gitAddremote','gitAdd', 'gitCommit', 'gitPull', 'gitPush'));

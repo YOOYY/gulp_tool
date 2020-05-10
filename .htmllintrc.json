@@ -1,7 +1,7 @@
 {
+    "attr-new-line":6,
     "attr-no-dup":true,
     "attr-no-unsafe-char":true,
-    "attr-new-line":6,
     "attr-order":[
         "id","class","type",
         "href","src","target","rel","alt",
@@ -29,16 +29,20 @@
     "fig-req-figcaption":true,
     "head-req-title":true,
     "head-valid-content-model":true,
-    "html-req-lang":true,
     "html-valid-content-model":true,
+    "id-class-style":"camel",
     "id-no-dup":true,
     "img-req-alt":true,
     "img-req-src":true,
+    "indent-style":"spaces",
+    "indent-width":false,
     "indent-width-cont":true,
     "input-radio-req-name":true,
     "input-req-label":true,
     "label-req-for":true,
+    "lang-style":true,
     "line-end-style":false,
+    "line-no-trailing-whitespace":true,
     "link-req-noopener":true,
     "spec-char-escape":true,
     "table-req-caption":true,
@@ -48,10 +52,10 @@
         "command","datalist","details","dialog","dir","font","frame","frameset",
         "menu","meter","noframes","noscript","output","s","strike","summary","tt"
     ],
-    "tag-self-close":"never",
     "tag-close":true,
     "tag-name-lowercase":true,
     "tag-name-match":true,
-    "title-no-dup":true,
-    "indent-width":false
+    "tag-req-attr":true,
+    "tag-self-close":"never",
+    "title-no-dup":true
 }

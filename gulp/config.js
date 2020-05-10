@@ -1,65 +1,80 @@
-var rootPath = 'app',
-    imgPath = rootPath + "/imgs",
-    pugPath = rootPath + "/pug",
-    dataPath = rootPath + "/pug/data",
-    scssPath = rootPath + "/scss",
-    jsPath = rootPath + "/js",
-    fontPath = rootPath + "/fonts",
+let path  = require('path'),
+    pathJoin = require('path').join,
+    rootPath = process.cwd(),
+    fs = require('fs'),
 
-    prefix = "\\$_",
-    git = ["./app","README.md","*(debug|build)"],
-    gitUrl = "http://10.1.3.188/1156864263/gulp_tool.git",
-    condition = (process.argv[2] === 'build' ? true : false),
-    browsers = [
-        "last 2 versions",
-        "> 1% in CN",
-        "ie >= 8",
-        "maintained node versions",
-        "not dead"
+    appPath = pathJoin(rootPath, 'app'),
+    imgPath = pathJoin(appPath, 'imgs'),
+    pugPath = pathJoin(appPath, 'pug'),
+    dataPath = pathJoin(pugPath, 'data'),
+    scssPath = pathJoin(appPath, 'scss'),
+    jsPath = pathJoin(appPath, 'js'),
+    fontPath = pathJoin(appPath, 'fonts'),
+    toolPath = pathJoin(__dirname,'../'),
+    templatePath = pathJoin(toolPath,'template'),
+    mock = require(pathJoin(appPath,'gulp/mock.js')),
+
+    appConfig = JSON.parse(fs.readFileSync(pathJoin(appPath,'config.json'))),
+    gulpConfig = appConfig.gulp,
+    changeExtname = gulpConfig.changeExtname || false,  //修改html文件后缀(dirGlobStr相对于生成目录) options：{ext:<String>,dirGlobStr:<String>} eg:{"ext":".php","dirGlobStr":"/index.html"}
+    outHtmlDir = gulpConfig.outHtmlDir || '', //修改html文件生成中间目录
+    jsTranlate = gulpConfig.jsTranlate || 'concat', //js转换模式 concat || es6 || ts
+    jsConcatDir = gulpConfig.jsConcatDir || ['base'], //数组成员混入config配置
+    
+    git = ['./app','README.md','*(debug|build)'], //git上传目录
+    gitUrl = gulpConfig.gitUrl || '', //项目git地址
+    // condition = (process.argv[2] === 'build' ? true : false), //环境判断
+    condition = false,
+    browsers = gulpConfig.browsers || [ //css浏览器兼容
+        'last 2 versions',
+        '> 1% in CN',
+        'ie >= 8',
+        'maintained node versions',
+        'not dead'
     ],
 
-    outPath = (condition ? "build" : "debug"),
-    outimgPath = outPath + "/imgs",
-    outhtmlPath = outPath + "/html",
-    outdataPath = outPath + "/html/data",
-    outcssPath = outPath + "/css",
-    outjsPath = outPath + "/js",
-    outfontPath = outPath + "/fonts",
-    outrevPath = outPath + "/rev",
+    outPath = pathJoin(rootPath, (condition ? 'build' : 'debug')), //输出文件夹目录
+    outImgPath = pathJoin(outPath, 'imgs'),
+    outHtmlPath = outPath,
+    outdataPath = pathJoin(outPath, 'data'),
+    outcssPath = pathJoin(outPath, 'css'),
+    outjsPath = pathJoin(outPath, 'js'),
+    outFontPath = pathJoin(outPath, 'fonts'),
+    outrevPath = pathJoin(outPath, 'rev'),
 
-    fs = require('fs'),
-    path = require('path'),
-    mock = require('../mock.js'),
-    server = {
-        baseDir: outPath,
+    server = { //服务器配置
+        baseDir: outHtmlPath,
         directory: false,
         index: ["index.html"],
         tunnel: true,
         middleware: mock.data()
     },
 
-    getFolders = function(dir, prefix) {
+    getDirs = function(dir, prefix) {
         var dirArr = [];
         findfile(dir, dirArr, prefix);
         return dirArr;
     
         function findfile(dir, dirArr, prefix) {
+            if (!fs.statSync(dir).isDirectory()){
+                return false;
+            };
             fs.readdirSync(dir)
-                .map(function (file) {
-                    var filePath = path.join(dir, file);
-                    if (fs.statSync(filePath).isDirectory()) {
-                        if (file.match(prefix)) {
-                            dirArr.push(filePath);
-                        } else {
-                            findfile(filePath, dirArr, prefix);
-                        }
+            .map(function (file) {
+                var filePath = pathJoin(dir, file);
+                if (fs.statSync(filePath).isDirectory()) {
+                    if (file.includes(prefix)) {
+                        dirArr.push(filePath);
+                    } else {
+                        findfile(filePath, dirArr, prefix);
                     }
-                });
+                }
+            });
         }
     };
-    
+    console.log(process.cwd());
 exports = module.exports = {
-    rootPath,
+    appPath,
     imgPath,
     pugPath,
     dataPath,
@@ -67,20 +82,26 @@ exports = module.exports = {
     jsPath,
     fontPath,
 
-    prefix,
     git,
     gitUrl,
     condition,
     browsers,
 
     outPath,
-    outimgPath,
-    outhtmlPath,
+    outImgPath,
+    outHtmlPath,
     outdataPath,
     outcssPath,
     outjsPath,
-    outfontPath,
+    outFontPath,
     outrevPath,
-    getFolders,
-    server
+    getDirs,
+    server,
+    outHtmlDir,
+    changeExtname,
+    jsConcatDir,
+    jsTranlate,
+    appConfig,
+    gulpConfig,
+    templatePath
 }

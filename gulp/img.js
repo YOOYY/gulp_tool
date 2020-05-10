@@ -1,86 +1,110 @@
-var gulp = require("gulp"),
-    fs = require('fs'),
-    path = require('path'),
+const { src:gSrc, dest:gDest, series:gSeries, task:gTask } = require('gulp'),
+    {
+        join:pJoin,
+        dirname:pDirname,
+        basename:pBasename,
+        relative:pRelative,
+        format:pFormat,
+        posix:pPosix
+    } = require('path'),
     merge = require('merge-stream'),
     clean = require('gulp-clean'),
-    gulpif = require('gulp-if'),
-    data = require('gulp-data'),
-
-    revCollector = require('gulp-rev-collector'),
-    reload = require('browser-sync').reload,
-
     spritesmith = require('gulp.spritesmith'),
     tinypng = require('gulp-tinypng'),
-
     rev = require('gulp-rev'),
-    config = require('./config.js'),
+    reload = require('browser-sync').reload,
+    {
+        imgPath,
+        scssPath,
+        outImgPath,
+        outrevPath,
+        templatePath,
+        getDirs,
+        condition,
+        gulpConfig
+    } = require('gulp-tool/gulp/config'),
 
-    folders = [];
- 
-//复制文件夹作为操作文件夹
-gulp.task('copyImgdir', function () {
-    return gulp.src(config.imgPath + '/**/*')
-        .pipe(gulp.dest(config.outimgPath))
-})
+    prefix = gulpConfig.prefix || '$_'; //雪碧图文件夹标志
+let spritesDirs = [],
+    needSprite = false;
 
-//将带有$_前缀的文件夹中的png文件合并成雪碧图
-gulp.task('sprites', function (done) {
-    folders = config.getFolders(config.outimgPath, config.prefix);
-    if (folders.length == 0) {
+function copyImgDir(){
+    return gSrc(pJoin(imgPath, '**', '*'))
+        .pipe(gDest(outImgPath))
+}
+
+//将带有$_前缀的文件夹中的图片文件合并成雪碧图
+function sprites(done) {
+    spritesDirs = getDirs(outImgPath, prefix);
+    needSprite = !!spritesDirs.length;
+    if (!needSprite) {
         done();
     }
 
-    var tasks = folders.map(function (folder) {
-        var str = folder.replace(config.outimgPath.replace('/', '\\'), ''),
-            namedir = str.substr(0, str.lastIndexOf('\\') + 1),
-            name = str.substr(str.search(config.prefix) + str.match(config.prefix)[0].length);
-        return gulp.src(path.join(folder, '/*.{png,jpg}'))
+    var tasks = spritesDirs.map(function (spritesDir) {
+        var tempstr = spritesDir.replace(outImgPath,''),
+            dirName = pJoin('./',pDirname(tempstr)),
+            baseName = pBasename(tempstr).replace(prefix, '');
+
+        return gSrc(pJoin(spritesDir, '/*.{png,jpg}'))
             .pipe(spritesmith({
-                imgName: '.' + namedir + name + '.png',//保存合并后图片的地址
-                cssName: '../../' + config.scssPath + '/_sprites/' + name + '.scss',//保存合并后对于css样式的地址
-                imgPath:(namedir + name + '.png').replace(/\\/g,'/').substr(1), // 手动指定路径, 会直接出现在background属性的值中
+                imgName: pFormat({ //生成后的sprites图片路径
+                    dir: dirName,
+                    name: baseName,
+                    ext: '.png'
+                }),
+                cssName: pFormat({ //相对于生成sprites的文件夹
+                    dir:pRelative(outImgPath,pJoin(scssPath, '_sprites', dirName)),
+                    name:baseName,
+                    ext:'.scss'
+                }),
+                imgPath: pPosix.format({ // css中sprites引入路径
+                    dir:dirName,
+                    name:baseName,
+                    ext:'.png'
+                }),
                 padding: 5,//合并时两个图片的间距
                 algorithm: 'binary-tree',//生成模式
-                cssFormat:'scss',
-                cssTemplate: config.scssPath + "/_sprites/template.handlebars",
+                cssFormat: 'scss',
+                cssTemplate: pJoin(templatePath, "/sprites/template.handlebars"),
                 cssHandlebarsHelpers:{
-                    'rename':function (path,name) {
-                        return path.slice(0,-4).replace('/','_')+'_'+name;
+                    'rename':function (dir,name) {
+                        return dir.replace('.png', '').replace('/', '_') + '_' + name;
                     }
                 }
             }))
-            .pipe(gulp.dest(config.outimgPath));
+            .pipe(gDest(outImgPath));
     });
     return merge(tasks);
-})
+}
 
-gulp.task('cleanSprites', function (done) {
-    if (folders.length == 0) {
+function cleanSprites(done) {
+    if (!needSprite) {
         done();
     } else {
-        return gulp.src(folders).pipe(clean());
+        return gSrc(spritesDirs).pipe(clean());
     }
-})
+}
 
 //有损压缩图片
-gulp.task('tinypng', function (done) {
-    if (config.condition) {
-        return gulp.src(config.outimgPath + '/**/*.{png,jpg}')
+function tinyImg(done) {
+    if (condition) {
+        return gSrc(outImgPath + '/**/*.{png,jpg}')
             .pipe(tinypng('L8AJPOaiMhx8bO2jozWdWi4T5WZIZiSk'))
     } else {
         done();
     }
-});
+}
 
-gulp.task('imgrev', (done) =>{
-    if (config.condition) {
-        return gulp.src([config.outimgPath + '/**/*'])
+function imgrev(done){
+    if (condition) {
+        return gSrc([outImgPath + '/**/*'])
         .pipe(rev())
         .pipe(rev.manifest({ merge: true }))
-        .pipe(gulp.dest(config.outrevPath))
+        .pipe(gDest(outrevPath))
     } else {
         done();
     }
-})
+}
 
-gulp.task('img', gulp.series('copyImgdir', 'sprites', 'cleanSprites', 'tinypng','imgrev'));
+gTask('img',gSeries(copyImgDir, sprites, cleanSprites, tinyImg, imgrev))
