@@ -22,6 +22,7 @@
 3.输出生产环境文件夹为build
 4.输出开发环境文件夹为debug
 5.版本文件夹为rev
+6.html文件中必须使用&nbsp来代替空格来输出一个空格的间距.
 -----
 # 工作流程流程:
 0.建立github仓库
@@ -80,6 +81,14 @@
             172:regexp: new RegExp( prefixDelim + pattern, 'g' ) =>regexp: new RegExp( prefixDelim + pattern + '(\\?v=\\w{10})?', 'g' )
 5.[pug|jade](https://pug.bootcss.com/api/getting-started.html)
     便于编写html的模板语言,复用html代码
+6.[gulp-pug-linter](https://www.npmjs.com/package/gulp-pug-linter)
+    pug检查工具
+    规则文档 https://github.com/pugjs/pug-lint/blob/master/docs/rules.md
+7.[gulp-htmllint](https://www.npmjs.com/package/gulp-htmllint)
+    html检查工具
+    规则文档 https://github.com/htmllint/htmllint/wiki/Options
+8.[htmlmin](https://github.com/kangax/html-minifier)
+    html压缩工具
 6.[sass](https://www.sass.hk/)
     sass和less任选其一
 7.[eslint](https://eslint.cn/)

@@ -4,4 +4,4 @@
 !/debug
 !config.json
 !README.md
-!.gitignore
+.gitignore

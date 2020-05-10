@@ -1,0 +1,23 @@
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='keywords',content=head.keywords)
+        meta(name='description',content=head.description)
+        link(rel="stylesheet" type="text/css" href="/css/index.css" media="screen and (max-width:700px)")
+        link(rel="icon" type="image/x-icon" href="/img/favicon.ico")
+        meta(http-equiv="cache-control" content="max-age=7200")
+        meta(http-equiv="expires" content="Mon May 27 2019 00:44:05 GMT")
+        title test
+    body
+        a(href=`https://www.baidu.com/`) Link
+        script.
+            var d = StrToGMT(1558889045000);
+            console.log(d);
+
+            function StrToGMT(time){
+                let GMT = new Date(time)
+                return GMT;
+            }

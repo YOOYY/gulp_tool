@@ -1,0 +1,179 @@
+{
+    "html5":false,
+    "headerHas":true,
+    "sidebarHas":true,
+    "footerHas":true,
+    "mainHas":true,
+    "fixedBoxHas":true,
+
+    "baseUrl":"/",
+    "imgUrl":"http://images.5151by.com/",
+    "cssUrl":"../../css/",
+    "jsUrl":"../../js/",
+    "viewUrl":"/views/",
+    "apiUrl":"http://transit.haha78.com/",
+    "cacheUrl":"/views/cache",
+
+    "baseCss" : "base.min",
+    "pageCss":false,
+    "phoneCss":"phone.min",
+    
+    "baseJs" : "base",
+    "pageJs":false,
+    "phoneJs":"phone",
+
+    "company":"合肥牌缘网络科技有限公司",
+    "address":"合肥市长丰县双墩镇阜阳北路科创北城6栋",
+    "phone":"0551-65588350",
+    "icp":"浙B2-20160483",
+    "gameNetTag":"文网游备字〔2017〕Ｍ-CBG 1316 号",
+    "record":"浙ICP备15027959号-1",
+    "permit":"浙网文 [2016] 0305-175号 版权所有  2018",
+
+    "head":{
+        "keywords":"神话捕鱼官网,神话捕鱼,神话捕鱼下载,神话捕鱼客户端下载",
+        "description":"神话捕鱼3D特效，炫酷玩法",
+        "icon" : "logo.ico",
+        "title" : "神话捕鱼官网",
+        "noCache" : false,
+        "maxAge" : false,
+        "robots":"all"
+    },
+
+    "header":{
+        "nav":[
+            {
+                "href":"index/index.html",
+                "pageId":"index",
+                "text":"",
+                "prevIcon":false,
+                "nextIcon":false,
+                "img":{
+                    "src":"header/index",
+                    "alt":"神话捕鱼官网首页"
+                },
+                "subNav":false
+            },
+            {
+                "href":"news/news.html",
+                "pageId":"news",
+                "text":"",
+                "prevIcon":false,
+                "nextIcon":false,
+                "img":{
+                    "src":"header/news",
+                    "alt":"神话捕鱼新闻公告"
+                },
+                "subNav":false
+            },
+            {
+                "href":"payment/alipay.html",
+                "pageId":"payment",
+                "text":"",
+                "prevIcon":false,
+                "nextIcon":false,
+                "img":{
+                    "src":"header/payment",
+                    "alt":"神话捕鱼充值入口"
+                },
+                "subNav":false
+            },
+            {
+                "href":"service/service.html",
+                "pageId":"service",
+                "text":"",
+                "prevIcon":false,
+                "nextIcon":false,
+                "img":{
+                    "src":"header/service",
+                    "alt":"神话捕鱼客服中心"
+                },
+                "subNav":false
+            },
+            {
+                "href":"register/register.html",
+                "pageId":"register",
+                "text":"",
+                "prevIcon":false,
+                "nextIcon":false,
+                "img":{
+                    "src":"header/register",
+                    "alt":"神话捕鱼玩家注册"
+                },
+                "subNav":false
+            }
+        ],
+        "logo":{
+            "href":"index/index.html",
+            "img":"common/logo.png",
+            "alt":"神话捕鱼logo"
+        }
+    },
+
+    "footer":{
+        "nav":[
+            {
+                "href":"service/aboutus.html",
+                "text":"公司介绍"
+            },
+            {
+                "href":"service/address.html",
+                "text":"公司地址"
+            },
+            {
+                "href":"service/info.html",
+                "text":"游戏介绍"
+            },
+            {
+                "href":"service/help.html",
+                "text":"新手帮助"
+            },
+            {
+                "href":"service/friendlink.html",
+                "text":"合作专区"
+            },
+            {
+                "href":"service/family.html",
+                "text":"家长监护"
+            }
+        ]
+    },
+    "vip" :
+        [
+            {
+                "title":"青卡：5元 获得50钻石。附赠 100000 金币",
+                "money":5,
+                "index":1
+            },
+            {
+                "title":"绿卡：20元 获得200钻石。附赠 400000 金币",
+                "money":20,
+                "index":2
+            },
+            {
+                "title":"黄卡：50元 获得500钻石。附赠 1000000 金币",
+                "money":50,
+                "index":3
+            },
+            {
+                "title":"橙卡：100元 获得1000钻石。附赠 2000000 金币",
+                "money":100,
+                "index":4            },
+            {
+                "title":"红卡：200元 获得2000钻石。附赠 4000000 金币",
+                "money":200,
+                "index":5
+            },
+            {
+                "title":"紫卡：500元 获得5000钻石。附赠 10000000 金币",
+                "money":500,
+                "index":6
+            },
+            {
+                "title":"黑卡：1000元 获得10000钻石。附赠 20000000 金币",
+                "money":1000,
+                "index":7
+            }
+        ],
+    "articleList":"[{title:'如何充值',content:'玩家通过支付宝、微信进行充值。',flag:'00'},{title:'充值有哪些方式',content:'支付宝、微信。',flag:'01'},{title:'充值未到账怎么办',content:'联系客服人员进行核实。',flag:'02'},{title:'无法登陆游戏',content:'退出游戏后重新进入游戏，或卸载重新安装游戏。若还是无法登陆游戏，请联系客服。',flag:'10'},{title:'游戏下载下来闪退',content:'1.可能是下载未完全，请等游戏完全下载。<br />2.可能是内存不足，请关闭一些其他程序。<br />若均不存在上述情况，建议卸载app后重新下载即可。',flag:'11'},{title:'安卓、IOS、PC版下载地址',content:'',flag:'12'},{title:'牌缘掼蛋是什么',content:'&quot;掼蛋&quot;，起源于江苏省淮安市淮安区，故又称&quot;淮安掼蛋&quot;、&quot;淮安跑得快&quot;，是一种在淮安以及周边地区广为流传的扑克游戏，是由地方的扑克牌局 &quot;跑得快&quot;和&quot;八十分&quot;发展演化而来。牌局采用四人结对竞赛，输赢升级的方式进行。使牌局更富有娱乐性和刺激性。江苏地区掼蛋非常流行，安徽、浙江地区也比较流行。2017年4月15日，国家体育总局棋牌运动管理中心正式对外发布《淮安掼蛋竞赛规则》，统一和规范了掼蛋的竞赛规则，有利于项目的推广和赛事组织工作。起源于淮安的掼蛋纸牌游戏的竞赛活动，在全国推广，走向世界，有了国家级的统一规则。',flag:'20'},{title:'牌缘掼蛋玩法特色',content:'带有中国传统武侠分享风，掼蛋的最大魅力、最集中的特点在于变化，在于牌际组合间的变数。有的新手往往先把牌配死，并拟好出牌计划，然后守株待兔，这种呆板的的打法只是初级阶段，完美的静态组合加上动态变化才是取胜之道。',flag:'21'}]"
+}
