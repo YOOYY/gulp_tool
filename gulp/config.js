@@ -18,13 +18,13 @@ let path  = require('path'),
     appConfig = JSON.parse(fs.readFileSync(pathJoin(appPath,'config.json'))),
     gulpConfig = appConfig.gulp,
     outHtmlDir = gulpConfig.outHtmlDir || false, //修改html文件生成中间目录
-    jsTranlate = gulpConfig.jsTranlate || 'concat', //js转换模式 concat || es6 || ts
     jsConcatDir = gulpConfig.jsConcatDir || ['base'], //数组成员混入config配置
-    
+    prefix = gulpConfig.prefix || "$_",
+    ext = gulpConfig.ext || "&",
     git = ['./app','README.md','*(debug|build)'], //git上传目录
     gitUrl = gulpConfig.gitUrl || '', //项目git地址
     condition = (process.argv[2] === 'build' ? true : false), //环境判断
-    // condition = false,
+    // condition = true,
     browsers = gulpConfig.browsers || [ //css浏览器兼容
         'last 2 versions',
         '> 1% in CN',
@@ -82,6 +82,8 @@ exports = module.exports = {
     jsPath,
     fontPath,
 
+    prefix,
+    ext,
     git,
     gitUrl,
     condition,
@@ -99,7 +101,6 @@ exports = module.exports = {
     server,
     outHtmlDir,
     jsConcatDir,
-    jsTranlate,
     appConfig,
     gulpConfig,
     templatePath

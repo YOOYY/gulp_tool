@@ -1,52 +1,74 @@
 var gulp = require("gulp"),
+    fs = require('fs'),
     merge = require('merge-stream'),
     gulpif = require('gulp-if'),
     path = require('path'),
 
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
-    eslint = require('gulp-eslint'),               
-    clean = require('gulp-clean'),
+    typescript = require('gulp-typescript'),
+    babel = require('gulp-babel'),
+    eslint = require('gulp-eslint'),
     browserSync = require('browser-sync'),
     reload = browserSync.reload,
 
     rev = require('gulp-rev'),
-    config = require('./config.js'),
+    config = require('./config'),
 
     folders = [];
 
-gulp.task('copyJsdir', function () {
-    return gulp.src(config.jsPath + '/**/*')
-        .pipe(gulp.dest(config.outjsPath))
-})
-
 gulp.task('jsConcat', function (done) {
-    folders = config.getFolders(config.outjsPath, config.prefix);
+    folders = config.getDirs(config.jsPath, config.prefix);
     if (folders.length == 0) {
         done();
     }
     var tasks = folders.map(function (folder) {
-        var str = folder.replace(config.outjsPath.replace('/', '\\'), ''),
-            namedir = str.substr(0, str.lastIndexOf('\\') + 1),
-            name = str.substr(str.search(config.prefix) + str.match(config.prefix)[0].length);
+        var tempstr = folder.replace(config.jsPath, ''),
+            baseName = path.basename(tempstr).replace(config.prefix, '');
         return gulp.src(path.join(folder, '/*.js'))
-            .pipe(concat(name + '.js'))
-            .pipe(gulp.dest(config.outjsPath + namedir));
+            .pipe(concat(baseName + '.js'))
+            .pipe(gulp.dest(config.outjsPath));
     });
 
     return merge(tasks);
 });
 
-gulp.task('cleanJs', function (done) {
-    if (folders.length == 0) {
-        done();
-    } else {
-        return gulp.src(folders).pipe(clean());
-    }
+gulp.task('mixConfig', function (done) {
+    var folders = config.jsConcatDir,str='debug';
+    var tasks = folders.map(function (folder) {
+        var file = path.join(config.jsPath,folder+'.js');
+        if(config.condition){str = 'build'}
+        var dir = [path.join(config.appPath,'config/js/index.js'),path.join(config.appPath,'config/js/'+ str +'.js')];
+        if(fs.existsSync(file)){
+            dir.push(file);
+        }
+        return gulp.src(dir,{base:config.outjsPath})
+            .pipe(concat(folder + '.js'))
+            .pipe(gulp.dest(config.outjsPath));
+    });
+
+    return merge(tasks);
+});
+
+gulp.task('typescript', function () {
+    return gulp.src(config.jsPath + '/**/*.ts')
+        .pipe(typescript({
+            noImplicitAny: true
+        }))
+        .pipe(gulp.dest(config.outjsPath))
+})
+
+gulp.task('babel', function () {
+    return gulp.src(config.outjsPath + '/**/*')
+        .pipe(babel({//编译ES6
+            presets: ["@babel/env"],
+            plugins: ['@babel/transform-runtime']
+        }))
+        .pipe(gulp.dest(config.outjsPath))
 })
 
 gulp.task('eslint', function () {
-    return gulp.src(config.outjsPath + '/**/*.js')
+    return gulp.src(config.outjsPath + '/**/*')
         // .pipe(
         //     gulpif(
         //         config.condition, eslint({
@@ -61,10 +83,6 @@ gulp.task('eslint', function () {
         // )
         // .pipe(eslint.format())
         // .pipe(eslint.failAfterError())
-        // .pipe(babel({//编译ES6
-        //     presets: ["@babel/env"],
-        //     plugins: ['@babel/transform-runtime']
-        // }))
         .pipe(gulp.dest(config.outjsPath))
         .pipe(reload({ stream: true }));
 });
@@ -91,5 +109,4 @@ gulp.task('jsUglify', (done) =>{
     }
 })
 
-gulp.task('js', gulp.series('copyJsdir','jsConcat','cleanJs','eslint','jsUglify'));
-gulp.task('es', gulp.series('jsUglify'));
+gulp.task('js', gulp.series('jsConcat','typescript','babel','eslint','jsUglify'));

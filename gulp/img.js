@@ -1,11 +1,15 @@
-const { src:gSrc, dest:gDest, series:gSeries, task:gTask } = require('gulp'),
-    {
-        join:pJoin,
-        dirname:pDirname,
-        basename:pBasename,
-        relative:pRelative,
-        format:pFormat,
-        posix:pPosix
+const {
+    src: gSrc,
+    dest: gDest,
+    series: gSeries,
+    task: gTask
+} = require('gulp'), {
+        join: pJoin,
+        dirname: pDirname,
+        basename: pBasename,
+        relative: pRelative,
+        format: pFormat,
+        posix: pPosix
     } = require('path'),
     merge = require('merge-stream'),
     clean = require('gulp-clean'),
@@ -22,13 +26,14 @@ const { src:gSrc, dest:gDest, series:gSeries, task:gTask } = require('gulp'),
         getDirs,
         condition,
         gulpConfig
-    } = require('gulp-tool/gulp/config');
+    } = require('./config');
 
 let spritesDirs = [],
-    prefix = gulpConfig.prefix,//雪碧图文件夹标志
+    prefix = gulpConfig.prefix, //雪碧图文件夹标志
     needSprite = false;
+//可以考虑一个base64插件
 
-function copyImgDir(){
+function copyImgDir() {
     return gSrc(pJoin(imgPath, '**', '*'))
         .pipe(gDest(outImgPath))
 }
@@ -42,10 +47,9 @@ function sprites(done) {
     }
 
     var tasks = spritesDirs.map(function (spritesDir) {
-        var tempstr = spritesDir.replace(outImgPath,''),
-            dirName = pJoin('./',pDirname(tempstr)),
+        var tempstr = spritesDir.replace(outImgPath, ''),
+            dirName = pJoin('./', pDirname(tempstr)),
             baseName = pBasename(tempstr).replace(prefix, '');
-
         return gSrc(pJoin(spritesDir, '/*.{png,jpg}'))
             .pipe(spritesmith({
                 imgName: pFormat({ //生成后的sprites图片路径
@@ -54,21 +58,21 @@ function sprites(done) {
                     ext: '.png'
                 }),
                 cssName: pFormat({ //相对于生成sprites的文件夹
-                    dir:pRelative(outImgPath,pJoin(scssPath, '_sprites', dirName)),
-                    name:baseName,
-                    ext:'.scss'
+                    dir: pRelative(outImgPath, pJoin(scssPath, '_sprites', dirName)),
+                    name: baseName,
+                    ext: '.scss'
                 }),
                 imgPath: pPosix.format({ // css中sprites引入路径
-                    dir:dirName,
-                    name:baseName,
-                    ext:'.png'
+                    dir: dirName,
+                    name: baseName,
+                    ext: '.png'
                 }),
-                padding: 5,//合并时两个图片的间距
-                algorithm: 'binary-tree',//生成模式
+                padding: 5, //合并时两个图片的间距
+                algorithm: 'binary-tree', //生成模式
                 cssFormat: 'scss',
                 cssTemplate: pJoin(templatePath, "/sprites/template.handlebars"),
-                cssHandlebarsHelpers:{
-                    'rename':function (dir,name) {
+                cssHandlebarsHelpers: {
+                    'rename': function (dir, name) {
                         return dir.replace('.png', '').replace('/', '_') + '_' + name;
                     }
                 }
@@ -96,17 +100,19 @@ function tinyImg(done) {
     }
 }
 
-function imgrev(done){
+function imgrev(done) {
     if (condition) {
         return gSrc([outImgPath + '/**/*'])
-        .pipe(rev())
-        .pipe(rev.manifest({ merge: true }))
-        .pipe(gDest(outrevPath))
+            .pipe(rev())
+            .pipe(rev.manifest({
+                merge: true
+            }))
+            .pipe(gDest(outrevPath))
     } else {
         done();
     }
 }
 
-gTask('imgrev',imgrev);
+gTask('imgrev', imgrev);
 
-gTask('img',gSeries(copyImgDir, sprites, cleanSprites, tinyImg, imgrev))
+gTask('img', gSeries(copyImgDir, sprites, cleanSprites, tinyImg, imgrev))

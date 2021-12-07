@@ -6,29 +6,16 @@ var gulp = require("gulp"),
 //清空除imgs之外的文件
 gulp.task('cleanDir', function (done) {
     if (fs.existsSync(config.outPath)) {
-        return gulp.src([config.outPath + '/**/*', '!' + config.outimgPath + '/**']).pipe(clean());
+        return gulp.src([config.outPath + '/**/*', '!' + config.outImgPath + '/**'],{read:false}).pipe(clean());
     } else {
         done();
     }
-}) 
+})
 
 //清理rev版本文件
 gulp.task('cleanRev', (done) => {
     if (config.condition) {
         return gulp.src(outrevPath).pipe(clean());
-    } else {
-        done();
-    }
-});
-
-//清理无用css
-gulp.task('uncss', function(done) {
-    if (condition) {
-        return gulp.src(outcssPath + '/**/*.css')
-            .pipe(uncss({
-                html: [outhtmlPath + '/**/*.html']
-            }))
-            .pipe(gulp.dest(outcssPath));
     } else {
         done();
     }

@@ -1,1 +1,1 @@
-require('gulp-tool');
+require('require-dir')('./gulp');

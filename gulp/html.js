@@ -16,7 +16,7 @@ var gulp = require("gulp"),
     reload = require('browser-sync').reload,
     config = require('./config'),
 
-    ext = config.gulpConfig.ext;
+    ext = config.ext;
 gulp.task('pug', () =>{
     return gulp.src(config.pugPath + '/**/*.pug')
         .pipe(pugLinter({
